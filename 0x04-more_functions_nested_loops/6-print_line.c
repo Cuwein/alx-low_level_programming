@@ -6,13 +6,13 @@
  * @n: An input integer
  * Return: Always 0
  */
-void print_line(int a)
+void print_line(int n)
 {
 	int x = 0;
 
-	if (a > 0)
+	if (n > 0)
 	{
-		for (; x < a; x++)
+		for (; x < n; x++)
 			_putchar('_');
 	}
 	_putchar('\n');
