@@ -5,11 +5,11 @@
  * Return: nelem
  */
 
-size_t list_len(const struct list_t *h)
+size_t list_len(const list_t *h)
 {
 size_t nelem = 0;
 
-	while (h)
+	while (h != NULL)
 	{
 	nelem++;
 	h = h->next;
