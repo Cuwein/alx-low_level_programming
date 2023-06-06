@@ -1,94 +1,73 @@
 #include "lists.h"
 
 /**
- * free_listp2 - Frees a linked list.
- * @head: Head of the list.
+ * free_listp2 - frees a linked list
+ * @head: head of a list.
  *
- * Return: No return.
+ * Return: returns nothing.
  */
 void free_listp2(listp_t **head)
 {
-	while (*head != NULL)
+	listp_t *t;
+	listp_t *c;
+
+	if (!head)
 	{
-		listp_t *temp = *head;
-		*head = (*head)->next;
-		free(temp);
+		c = *head;
+		while ((t = c) != NULL)
+		{
+			c = c->next;
+			free(t);
+		}
+
+		*head = NULL;
 	}
 }
 
 /**
- * find_node - Finds a node in the list.
- * @h: Pointer to the head of the list.
- * @add: Pointer to the list pointer being checked.
+ * free_listint_safe - frees a linked list.
+ * @h: head of a list.
  *
- * Return: True if the node is found, false otherwise.
- */
-bool find_node(listint_t **h, listp_t *add)
-{
-	while (add != NULL)
-	{
-		if (*h == (listint_t *)add->p)
-			return (true);
-		add = add->next;
-	}
-	return (false);
-}
-
-/**
- * remove_node - Removes a node from the list.
- * @h: Pointer to the head of the list.
- * @hptr: Pointer to the temporary list pointer.
- * @found: Pointer to the boolean flag indicating if the node was found.
- *
- * Return: No return.
- */
-void remove_node(listint_t **h, listp_t **hptr, bool *found)
-{
-	*h = NULL;
-	*found = true;
-	free_listp2(hptr);
-}
-
-/**
- * free_listint_safe - Frees a linked list safely.
- * @h: Head of the list.
- *
- * Return: Size of the list that was freed.
+ * Return: return new_nodes.
  */
 size_t free_listint_safe(listint_t **h)
 {
-	size_t nnodes = 0;
-	listp_t *hptr = NULL;
-	bool found;
-	listint_t *curr = *h;
+	size_t new_nodes = 0;
+	listp_t *hptr, *n, *sum;
+	listint_t *c;
 
+	hptr = NULL;
 	while (*h != NULL)
 	{
-		listp_t *new_node = malloc(sizeof(listp_t));
+		n = malloc(sizeof(listp_t));
 
-		if (new_node == NULL)
-		{
-			free_listp2(&hptr);
+		if (n == NULL)
 			exit(98);
-		}
 
-		new_node->p = (void *)*h;
-		new_node->next = hptr;
-		hptr = new_node;
+		n->p = (void *)*h;
+		n->next = hptr;
+		hptr = n;
 
-		found = find_node(h, hptr);
+		sum = hptr;
 
-		if (found)
+		while (sum->next != NULL)
 		{
-			remove_node(h, &hptr, &found);
-			return (nnodes);
+			sum = sum->next;
+			if (*h == sum->p)
+			{
+				*h = NULL;
+				free_listp2(&hptr);
+				return (new_nodes);
+			}
 		}
 
+		c = *h;
 		*h = (*h)->next;
-		free(curr);
-		nnodes++;
+		free(c);
+		new_nodes++;
 	}
 
+	*h = NULL;
 	free_listp2(&hptr);
-	return (nnodes);
+	return (new_nodes);
 }
