@@ -3,47 +3,36 @@
 /**
  * find_listint_loop - finds the loop in a linked list.
  * @head: head of a list.
- *
- * Return: the address of the node where the loop starts.
+ * Return: return NULL.
  */
 listint_t *find_listint_loop(listint_t *head)
 {
+	listint_t *x, *y;
 
-	/* Declare variables */
-	listint_t *slow;
-	listint_t *fast;
+	if (head == NULL || head->next == NULL)
+		return (NULL);
 
-	/* Initialize slow and fast pointers */
-	slow = head;
-	fast = head;
+	x = head->next;
+	y = (head->next)->next;
 
-	/* Iterate over the linked list, moving slow and fast at different speeds */
-	while (slow && fast && fast->next)
+	while (y)
 	{
+		if (x == y)
+		{
+			x = y;
 
-	/* Move slow one node at a time */
-		slow = slow->next;
+			while (x != y)
+			{
+				x = y->next;
+				y = y->next;
+			}
 
-	/* Move fast two nodes at a time */
-	fast = fast->next->next;
+			return (x);
+		}
 
-	/* Check if slow and fast have met */
-	if (slow == fast)
-	{
-
-	/* Find the node that starts the loop */
-	while (slow != fast)
-	{
-		slow = slow->next;
-		fast = fast->next;
+		x = x->next;
+		y = (y->next)->next;
 	}
 
-	/* Return the node that starts the loop */
-	return (slow);
-	}
-	}
-
-	/* Return NULL if no loop was found */
 	return (NULL);
 }
-
