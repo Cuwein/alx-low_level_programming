@@ -11,7 +11,7 @@ void free_listp2(listp_t **head)
 	listp_t *t;
 	listp_t *c;
 
-	if (head == NULL)
+	if (head != NULL)
 	{
 		c = *head;
 		while ((t = c) != NULL)
